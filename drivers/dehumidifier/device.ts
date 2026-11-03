@@ -7,6 +7,7 @@ import {
   DEHUMIDIFIER_CAPABILITY_MAPPING,
   type HomeyDehumidifierSettings,
 } from './DehumidifierConstants.js';
+import * as DehumidifierMigrations from '../../lib/migrations/DehumidifierMigrations.js';
 
 export default class TuyaOAuth2DeviceDehumidifier extends TuyaOAuth2Device {
   public async onOAuth2Init(): Promise<void> {
@@ -28,6 +29,11 @@ export default class TuyaOAuth2DeviceDehumidifier extends TuyaOAuth2Device {
         });
       }
     }
+  }
+
+  protected async performMigrations(): Promise<void> {
+    await super.performMigrations();
+    await DehumidifierMigrations.performMigrations(this);
   }
 
   public async onTuyaStatus(status: TuyaStatus, changed: string[]): Promise<void> {

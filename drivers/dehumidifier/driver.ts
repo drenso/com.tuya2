@@ -54,6 +54,8 @@ export default class TuyaOAuth2DriverDehumidifier extends TuyaOAuth2Driver {
       ...driver_compose.capabilitiesOptions,
     };
 
+    props.store['_migrations'] = ['dehumidifier_target_humidity_scaling'];
+
     if (!specifications || !specifications.status) {
       return props;
     }
