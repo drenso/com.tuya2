@@ -8,7 +8,7 @@ import type {
 } from '../../types/TuyaApiTypes.js';
 import type { StandardDeviceFlowArgs, StandardFlowArgs } from '../../types/TuyaTypes.js';
 import driver_compose from './driver.compose.json' with { type: 'json' };
-import { HUMIDIFIER_CAPABILITY_MAPPING, HUMIDIFIER_FLOWS } from './TuyaHumidifierConstants.js';
+import { HUMIDIFIER_CAPABILITIES, HUMIDIFIER_CAPABILITY_MAPPING, HUMIDIFIER_FLOWS } from './TuyaHumidifierConstants.js';
 
 export default class TuyaOAuth2DriverHumidifier extends TuyaOAuth2Driver {
   protected TUYA_DEVICE_CATEGORIES = [DEVICE_CATEGORIES.SMALL_HOME_APPLIANCES.HUMIDIFIER] as const;
@@ -96,9 +96,9 @@ export default class TuyaOAuth2DriverHumidifier extends TuyaOAuth2Driver {
         };
       }
 
-      if (tuyaCapability === 'humidity_set') {
+      if (HUMIDIFIER_CAPABILITIES.read_write_percentage.includes(tuyaCapability as never)) {
         const { min = 0, max = 100, step = 1, scale = 0 } = values as Record<string, number | undefined>;
-        props.store['humidity_set_scale'] = { min, max, step, scale };
+        props.store[`${tuyaCapability}_scale`] = { min, max, step, scale };
 
         const scaleFactor = 10 ** scale;
 

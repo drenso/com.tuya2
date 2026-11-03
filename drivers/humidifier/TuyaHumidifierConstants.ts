@@ -15,7 +15,7 @@ export const HUMIDIFIER_CAPABILITY_MAPPING = {
 export const HUMIDIFIER_CAPABILITIES = {
   read_write: ['switch', 'switch_spray', 'mode', 'spray_mode', 'level', 'temp_set', 'sleep'],
   read_only: ['temp_current', 'humidity_current', 'level_current'],
-  read_write_scaled: ['humidity_set'],
+  read_write_percentage: ['humidity_set'],
 } as const;
 
 export const HUMIDIFIER_FLOWS = {

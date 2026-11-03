@@ -25,11 +25,11 @@ export default class TuyaOAuth2DeviceHumidifier extends TuyaOAuth2Device {
       }
     }
 
-    for (const tuyaCapability of HUMIDIFIER_CAPABILITIES.read_write_scaled) {
+    for (const tuyaCapability of HUMIDIFIER_CAPABILITIES.read_write_percentage) {
       const homeyCapability = HUMIDIFIER_CAPABILITY_MAPPING[tuyaCapability];
-      if (homeyCapability && this.hasCapability(homeyCapability)) {
+      if (this.hasTuyaCapability(tuyaCapability) && this.hasCapability(homeyCapability)) {
         this.registerCapabilityListener(homeyCapability, value => {
-          const scaling = computeScaleFactor(this.getSetting(`${homeyCapability}_scaling`));
+          const scaling = 100 * computeScaleFactor(this.getSetting(`${homeyCapability}_scaling`));
           return this.sendCommand({
             code: tuyaCapability,
             value: value * scaling,
@@ -58,15 +58,15 @@ export default class TuyaOAuth2DeviceHumidifier extends TuyaOAuth2Device {
         await this.safeSetCapabilityValue(homeyCapability, value);
       }
 
-      if (constIncludes(HUMIDIFIER_CAPABILITIES.read_write_scaled, tuyaCapability)) {
-        const scaling = computeScaleFactor(this.getSetting(`${homeyCapability}_scaling`));
+      if (constIncludes(HUMIDIFIER_CAPABILITIES.read_write_percentage, tuyaCapability)) {
+        const scaling = 100 * computeScaleFactor(this.getSetting(`${homeyCapability}_scaling`));
         await this.safeSetCapabilityValue(homeyCapability, (value as number) / scaling);
       }
     }
   }
 
   public async onSettings(event: SettingsEvent<HomeyHumidifierSettings>): Promise<string | void> {
-    for (const tuyaCapability of HUMIDIFIER_CAPABILITIES.read_write_scaled) {
+    for (const tuyaCapability of HUMIDIFIER_CAPABILITIES.read_write_percentage) {
       const homeyCapability = HUMIDIFIER_CAPABILITY_MAPPING[tuyaCapability];
       await TuyaOAuth2Util.handleScaleSetting(this, event, `${homeyCapability}_scaling`, homeyCapability).catch(
         this.error,

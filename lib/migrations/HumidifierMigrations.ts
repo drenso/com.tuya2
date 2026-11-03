@@ -17,7 +17,6 @@ async function targetHumidityScalingMigration(device: TuyaOAuth2DeviceHumidifier
 
     if (deviceSpecs?.status === undefined) {
       // Use spec defaults
-      await device.setStoreValue('humidity_set_scale', { min: 0, max: 100, step: 1, scale: 0 });
       await device.setCapabilityOptions('target_humidity', {
         min: 0,
         max: 1,
@@ -34,14 +33,14 @@ async function targetHumidityScalingMigration(device: TuyaOAuth2DeviceHumidifier
       }
 
       const values = JSON.parse(statusSpecification.values);
-      const homeyCapability = HUMIDIFIER_CAPABILITY_MAPPING['humidity_set'];
+      const homeyCapability = HUMIDIFIER_CAPABILITY_MAPPING[tuyaCapability];
 
       const { min = 0, max = 100, step = 1, scale = 0 } = values as Record<string, number | undefined>;
-      await device.setStoreValue('humidity_set_scale', { min, max, step, scale });
+      await device.setStoreValue(`${tuyaCapability}_scale`, { min, max, step, scale });
 
       const scaleFactor = 10 ** scale;
 
-      await device.setCapabilityOptions('target_humidity', {
+      await device.setCapabilityOptions(homeyCapability, {
         min: min / scaleFactor / 100,
         max: max / scaleFactor / 100,
         step: step / scaleFactor / 100,
@@ -54,6 +53,8 @@ async function targetHumidityScalingMigration(device: TuyaOAuth2DeviceHumidifier
       } else {
         device.error(`Unsupported ${tuyaCapability} scale:`, values.scale);
       }
+
+      break;
     }
   });
 }
