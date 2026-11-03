@@ -14,7 +14,19 @@ export default class TuyaOAuth2DeviceDehumidifier extends TuyaOAuth2Device {
 
     for (const tuyaCapability of DEHUMIDIFIER_CAPABILITIES.read_write) {
       const homeyCapability = DEHUMIDIFIER_CAPABILITY_MAPPING[tuyaCapability];
-      this.registerCapabilityListener(homeyCapability, value => this.sendCommand({ code: tuyaCapability, value }));
+      if (this.hasTuyaCapability(tuyaCapability)) {
+        this.registerCapabilityListener(homeyCapability, value => this.sendCommand({ code: tuyaCapability, value }));
+      }
+    }
+
+    for (const tuyaCapability of DEHUMIDIFIER_CAPABILITIES.read_write_percentage) {
+      const homeyCapability = DEHUMIDIFIER_CAPABILITY_MAPPING[tuyaCapability];
+      if (this.hasTuyaCapability(tuyaCapability)) {
+        this.registerCapabilityListener(homeyCapability, value => {
+          const scaling = 100 * computeScaleFactor(this.getSetting(`${homeyCapability}_scaling`));
+          this.sendCommand({ code: tuyaCapability, value: value * scaling });
+        });
+      }
     }
   }
 
@@ -33,11 +45,20 @@ export default class TuyaOAuth2DeviceDehumidifier extends TuyaOAuth2Device {
         const scaling = computeScaleFactor(this.getSetting(`${homeyCapability}_scaling`));
         await this.safeSetCapabilityValue(homeyCapability, (status[tuyaCapability] as number) / scaling);
       }
+
+      if (constIncludes(DEHUMIDIFIER_CAPABILITIES.read_write_percentage, tuyaCapability)) {
+        const scaling = 100 * computeScaleFactor(this.getSetting(`${homeyCapability}_scaling`));
+        await this.safeSetCapabilityValue(homeyCapability, (status[tuyaCapability] as number) / scaling);
+      }
     }
   }
 
   public async onSettings(event: SettingsEvent<HomeyDehumidifierSettings>): Promise<string | void> {
     for (const tuyaCapability of DEHUMIDIFIER_CAPABILITIES.read_only_scaled) {
+      const homeyCapability = DEHUMIDIFIER_CAPABILITY_MAPPING[tuyaCapability];
+      await Util.handleScaleSetting(this, event, `${homeyCapability}_scaling`, homeyCapability).catch(this.error);
+    }
+    for (const tuyaCapability of DEHUMIDIFIER_CAPABILITIES.read_write_percentage) {
       const homeyCapability = DEHUMIDIFIER_CAPABILITY_MAPPING[tuyaCapability];
       await Util.handleScaleSetting(this, event, `${homeyCapability}_scaling`, homeyCapability).catch(this.error);
     }

@@ -16,24 +16,16 @@ export const DEHUMIDIFIER_CAPABILITY_MAPPING = {
 } as const;
 
 export const DEHUMIDIFIER_CAPABILITIES = {
-  read_write: [
-    'switch',
-    'child_lock',
-    'sleep',
-    'defrost',
-    'fan_speed_enum',
-    'dehumidify_set_value',
-    'dehumidify_set_enum',
-    'swing',
-    'mode',
-  ],
+  read_write: ['switch', 'child_lock', 'sleep', 'defrost', 'fan_speed_enum', 'dehumidify_set_enum', 'swing', 'mode'],
   read_only_scaled: ['pm25', 'temp_indoor', 'humidity_indoor'],
+  read_write_percentage: ['dehumidify_set_value'],
 } as const;
 
 export type HomeyDehumidifierSettings = {
   measure_humidity_scaling: ScaledProperty;
   measure_temperature_scaling: ScaledProperty;
   measure_pm25_scaling: ScaledProperty;
+  target_humidity_scaling: ScaledProperty;
 };
 
 export type TuyaDehumidifierSettings = never;
