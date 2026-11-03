@@ -96,23 +96,8 @@ export default class TuyaOAuth2DriverHumidifier extends TuyaOAuth2Driver {
         };
       }
 
-      if (HUMIDIFIER_CAPABILITIES.read_write_percentage.includes(tuyaCapability as never)) {
-        const { min = 0, max = 100, step = 1, scale = 0 } = values as Record<string, number | undefined>;
-        props.store[`${tuyaCapability}_scale`] = { min, max, step, scale };
-
-        const scaleFactor = 10 ** scale;
-
-        props.capabilitiesOptions[homeyCapability!] = {
-          min: min / scaleFactor / 100,
-          max: max / scaleFactor / 100,
-          step: step / scaleFactor / 100,
-        };
-
-        if ([0, 1, 2, 3].includes(values.scale)) {
-          props.settings[`${homeyCapability}_scaling`] = `${values.scale}`;
-        } else {
-          this.error(`Unsupported ${tuyaCapability} scale:`, values.scale);
-        }
+      if (HUMIDIFIER_CAPABILITIES.read_write_percentage.includes(tuyaCapability as never) && homeyCapability) {
+        this.registerReadWritePercentageCapability(values, props, tuyaCapability, homeyCapability);
       }
     }
 

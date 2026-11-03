@@ -325,6 +325,30 @@ export default class TuyaOAuth2Driver extends OAuth2Driver<TuyaHaClient> {
     };
   }
 
+  protected registerReadWritePercentageCapability(
+    values: Record<string, number | undefined>,
+    props: ListDeviceProperties,
+    tuyaCapability: string,
+    homeyCapability: string,
+  ): void {
+    const { min = 0, max = 100, step = 1, scale = 0 } = values;
+    props.store[`${tuyaCapability}_scale`] = { min, max, step, scale };
+
+    const scaleFactor = 10 ** scale;
+
+    props.capabilitiesOptions[homeyCapability!] = {
+      min: min / scaleFactor / 100,
+      max: max / scaleFactor / 100,
+      step: step / scaleFactor / 100,
+    };
+
+    if ([0, 1, 2, 3].includes(scale)) {
+      props.settings[`${homeyCapability}_scaling`] = `${values.scale}`;
+    } else {
+      this.error(`Unsupported ${tuyaCapability} scale:`, values.scale);
+    }
+  }
+
   protected addSettingFlowHandler<K extends string, L extends Record<K, Translation>>(setting: K, labels: L): void {
     this.homey.flow
       .getActionCard(`${this.id}_${setting}`)
