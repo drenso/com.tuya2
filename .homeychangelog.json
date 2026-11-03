@@ -100,5 +100,8 @@
   },
   "1.5.12": {
     "en": "Fix humidifier humidity setpoint scaling"
+  },
+  "1.5.13": {
+    "en": "Fix dehumidifier humidity setpoint scaling"
   }
 }
