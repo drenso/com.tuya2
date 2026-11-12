@@ -103,5 +103,8 @@
   },
   "1.5.13": {
     "en": "Fix dehumidifier humidity setpoint scaling"
+  },
+  "1.5.14": {
+    "en": "Resolve issue with specific (de)humidifiers when setting target humidity to specific values"
   }
 }
