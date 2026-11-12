@@ -25,7 +25,7 @@ export default class TuyaOAuth2DeviceDehumidifier extends TuyaOAuth2Device {
       if (this.hasTuyaCapability(tuyaCapability)) {
         this.registerCapabilityListener(homeyCapability, value => {
           const scaling = 100 * computeScaleFactor(this.getSetting(`${homeyCapability}_scaling`));
-          this.sendCommand({ code: tuyaCapability, value: value * scaling });
+          this.sendCommand({ code: tuyaCapability, value: Math.round(value * scaling) });
         });
       }
     }

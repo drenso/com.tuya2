@@ -32,7 +32,7 @@ export default class TuyaOAuth2DeviceHumidifier extends TuyaOAuth2Device {
           const scaling = 100 * computeScaleFactor(this.getSetting(`${homeyCapability}_scaling`));
           return this.sendCommand({
             code: tuyaCapability,
-            value: value * scaling,
+            value: Math.round(value * scaling),
           });
         });
       }
