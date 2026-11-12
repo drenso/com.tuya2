@@ -1,5 +1,4 @@
 import * as TuyaFanMigrations from '../../lib/migrations/TuyaFanMigrations.js';
-import { DEVICE_CATEGORIES } from '../../lib/TuyaOAuth2Constants.js';
 import TuyaOAuth2DeviceWithLight from '../../lib/TuyaOAuth2DeviceWithLight.js';
 import * as TuyaOAuth2Util from '../../lib/TuyaOAuth2Util.js';
 import { constIncludes, getFromMap } from '../../lib/TuyaOAuth2Util.js';
@@ -81,12 +80,9 @@ export default class TuyaOAuth2DeviceFan extends TuyaOAuth2DeviceWithLight {
         await this.safeSetSettingValue('fan_direction', directionValue);
       }
 
-      if (tuyaCapability === 'fan_speed') {
-        if (this.getStoreValue('tuya_category') === DEVICE_CATEGORIES.LIGHTING.CEILING_FAN_LIGHT) {
-          await this.safeSetCapabilityValue('fan_speed', value);
-        } else {
-          await this.safeSetCapabilityValue('legacy_fan_speed', String(value));
-        }
+      if (tuyaCapability === 'fan_speed' || tuyaCapability === 'fan_speed_percent') {
+        await this.safeSetCapabilityValue('fan_speed', value);
+        await this.safeSetCapabilityValue('legacy_fan_speed', String(value));
       }
     }
 
