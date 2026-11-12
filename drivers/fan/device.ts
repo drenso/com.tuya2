@@ -10,6 +10,8 @@ import {
   type HomeyFanSettings,
   type TuyaFanSettings,
 } from './TuyaFanConstants.js';
+import { fromCelsiusConversion, toCelsiusConversion } from '../../lib/UnitConversion.js';
+import { convertAndScaleToHomey, convertScaleAndRoundFromHomey } from '../../lib/ScalingUtil.js';
 
 export default class TuyaOAuth2DeviceFan extends TuyaOAuth2DeviceWithLight {
   protected LIGHT_DIM_CAPABILITY = 'dim';
@@ -26,6 +28,18 @@ export default class TuyaOAuth2DeviceFan extends TuyaOAuth2DeviceWithLight {
       ) {
         this.registerCapabilityListener(capability, value => this.sendCommand({ code: tuyaCapability, value }));
       }
+    }
+
+    // temp
+    if (this.hasCapability('target_temperature')) {
+      this.registerCapabilityListener('target_temperature', (value: number) => {
+        const temperature = convertScaleAndRoundFromHomey(
+          value,
+          this.getStore()['target_temperature_scale'],
+          fromCelsiusConversion,
+        );
+        return this.sendCommand({ code: 'temp', value: temperature });
+      });
     }
 
     // fan_speed
@@ -73,6 +87,24 @@ export default class TuyaOAuth2DeviceFan extends TuyaOAuth2DeviceWithLight {
         homeyCapability
       ) {
         await this.safeSetCapabilityValue(homeyCapability, value);
+      }
+
+      if (tuyaCapability === 'temp') {
+        const temperature = convertAndScaleToHomey(
+          value as number,
+          this.getStore()['target_temperature_scale'],
+          toCelsiusConversion,
+        );
+        await this.safeSetCapabilityValue('target_temperature', temperature);
+      }
+
+      if (tuyaCapability === 'temp_current') {
+        const temperature = convertAndScaleToHomey(
+          value as number,
+          this.getStore()['measure_temperature_scale'],
+          toCelsiusConversion,
+        );
+        await this.safeSetCapabilityValue('measure_temperature', temperature);
       }
 
       if (tuyaCapability === 'fan_direction') {

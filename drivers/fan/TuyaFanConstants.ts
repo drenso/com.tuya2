@@ -1,3 +1,5 @@
+import type { UnitScaling } from '../../lib/ScalingUtil.js';
+
 export const FAN_CAPABILITIES_MAPPING = {
   switch: 'onoff',
   fan_switch: 'onoff',
@@ -6,8 +8,8 @@ export const FAN_CAPABILITIES_MAPPING = {
   switch_vertical: 'fan_swing_vertical',
   switch_horizontal: 'fan_swing_horizontal',
   child_lock: 'child_lock',
-  temp: 'target_temperature',
-  temp_current: 'measure_temperature',
+  // temp: 'target_temperature' - may need unit conversion
+  // temp_current: 'measure_temperature' - may need unit conversion
   // light - handled by superclass
   light: 'onoff.light',
   switch_led: 'onoff.light',
@@ -45,3 +47,21 @@ export type HomeyFanSettings = {
 export type TuyaFanSettings = {
   fan_direction: 'forward' | 'backward' | 'reverse';
 };
+
+type TemperatureScaling = UnitScaling<'C' | 'F'>;
+
+export const tempSpecDefaultScaling = {
+  unit: 'C',
+  min: 0,
+  max: 50,
+  scale: 0,
+  step: 1,
+} as TemperatureScaling;
+
+export const tempCurrentSpecDefaultScaling = {
+  unit: 'C',
+  min: 0,
+  max: 1000,
+  scale: 0,
+  step: 1,
+} as TemperatureScaling;

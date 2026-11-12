@@ -9,7 +9,9 @@ import type {
 } from '../../types/TuyaApiTypes.js';
 import type { StandardDeviceFlowArgs, StandardFlowArgs } from '../../types/TuyaTypes.js';
 import TRANSLATIONS from './translations.json' with { type: 'json' };
-import { FAN_CAPABILITIES_MAPPING } from './TuyaFanConstants.js';
+import { FAN_CAPABILITIES_MAPPING, tempCurrentSpecDefaultScaling, tempSpecDefaultScaling } from './TuyaFanConstants.js';
+import { convertAndScaleTemperatureStep, toCelsiusConversion } from '../../lib/UnitConversion.js';
+import { extractUnitScaling } from '../../lib/ScalingUtil.js';
 
 export default class TuyaOAuth2DriverFan extends TuyaOAuth2DriverWithLight {
   protected TUYA_DEVICE_CATEGORIES = [
@@ -49,7 +51,12 @@ export default class TuyaOAuth2DriverFan extends TuyaOAuth2DriverWithLight {
     // superclass handles light capabilities, except onoff.light
     const props = super.onTuyaPairListDeviceProperties(device, specifications, dataPoints);
 
-    props.store['_migrations'] = ['fan_tuya_capabilities', 'reversed_fan_direction', 'fan_speed_steps'];
+    props.store['_migrations'] = [
+      'fan_tuya_capabilities',
+      'reversed_fan_direction',
+      'fan_speed_steps',
+      'fan_temperature_scaling',
+    ];
 
     let fanSpeedTuyaCapability = '';
 
@@ -107,6 +114,9 @@ export default class TuyaOAuth2DriverFan extends TuyaOAuth2DriverWithLight {
         };
       }
 
+      props.store['target_temperature_scale'] = tempSpecDefaultScaling;
+      props.capabilitiesOptions['measure_temperature'] = tempSpecDefaultScaling;
+
       return props;
     }
 
@@ -114,11 +124,11 @@ export default class TuyaOAuth2DriverFan extends TuyaOAuth2DriverWithLight {
       const tuyaCapability = statusSpecification.code;
       const values: Record<string, unknown> = JSON.parse(statusSpecification.values);
 
-      const speeds = values.range as string[] | undefined;
-      const { min = 1, max = 100, step = 1, scale = 0 } = values as Record<string, number | undefined>;
-
       // Fan
       if (tuyaCapability === fanSpeedTuyaCapability) {
+        const speeds = values.range as string[] | undefined;
+        const { min = 1, max = 100, step = 1, scale = 0 } = values as Record<string, number | undefined>;
+
         if (speeds !== undefined) {
           const legacyFanSpeedsEnum = speeds.map(value => ({
             id: value,
@@ -163,16 +173,22 @@ export default class TuyaOAuth2DriverFan extends TuyaOAuth2DriverWithLight {
 
       // Temperature
       if (tuyaCapability === 'temp') {
-        props.capabilitiesOptions['target_temperature'] = {
-          min: values.min ?? 0,
-          max: values.max ?? 50,
-        };
+        const scaling = extractUnitScaling(values, tempSpecDefaultScaling, toCelsiusConversion);
+        // F to C delta conversion is different from absolute conversion
+        scaling.scaledStep = convertAndScaleTemperatureStep(values, tempSpecDefaultScaling);
+
+        const { scaledMin, scaledMax, scaledStep } = scaling;
+        props.capabilitiesOptions['target_temperature'] = { min: scaledMin, max: scaledMax, step: scaledStep };
+        props.store['target_temperature_scale'] = scaling;
       }
       if (tuyaCapability === 'temp_current') {
-        props.capabilitiesOptions['measure_temperature'] = {
-          min: values.min ?? 0,
-          max: values.max ?? 50,
-        };
+        const scaling = extractUnitScaling(values, tempCurrentSpecDefaultScaling, toCelsiusConversion);
+        // F to C delta conversion is different from absolute conversion
+        scaling.scaledStep = convertAndScaleTemperatureStep(values, tempCurrentSpecDefaultScaling);
+
+        const { scaledMin, scaledMax, scaledStep } = scaling;
+        props.capabilitiesOptions['measure_temperature'] = { min: scaledMin, max: scaledMax, step: scaledStep };
+        props.store['measure_temperature_scale'] = scaling;
       }
     }
 

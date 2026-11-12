@@ -1,12 +1,18 @@
 import type TuyaOAuth2DeviceFan from '../../drivers/fan/device.js';
 import { DEVICE_CATEGORIES } from '../TuyaOAuth2Constants.js';
 import { executeMigration } from './MigrationStore.js';
+import { tempCurrentSpecDefaultScaling, tempSpecDefaultScaling } from '../../drivers/fan/TuyaFanConstants.js';
+import { convertAndScaleTemperatureStep, toCelsiusConversion } from '../UnitConversion.js';
+import { extractUnitScaling } from '../ScalingUtil.js';
 
 export async function performMigrations(device: TuyaOAuth2DeviceFan): Promise<void> {
   await tuyaCapabilitiesMigration(device).catch(device.error);
   await fanDirectionMigration(device).catch(device.error);
   await fanSpeedStepsMigration(device).catch(err =>
     device.error('Error while performing fan speed steps migration:', err),
+  );
+  await temperatureScalingMigration(device).catch(err =>
+    device.error('Error while performing fan temperature scaling migration:', err),
   );
 }
 
@@ -182,5 +188,57 @@ async function fanSpeedStepsMigration(device: TuyaOAuth2DeviceFan): Promise<void
         });
       }
     }
+  });
+}
+
+async function temperatureScalingMigration(device: TuyaOAuth2DeviceFan): Promise<void> {
+  await executeMigration(device, 'fan_temperature_scaling', async () => {
+    device.log('Migrating fan temperature scaling...');
+
+    const deviceSpecs =
+      (await device.oAuth2Client
+        .getSpecification(device.data.deviceId)
+        .catch(e => device.log('Device specification retrieval failed', e))) ?? undefined;
+
+    let targetTemperatureScaling = tempSpecDefaultScaling;
+    let measureTemperatureScaling = tempCurrentSpecDefaultScaling;
+
+    if (deviceSpecs?.status !== undefined) {
+      for (const statusSpecification of deviceSpecs.status) {
+        const tuyaCapability = statusSpecification.code;
+        if (tuyaCapability === 'temp') {
+          const values: Record<string, unknown> = JSON.parse(statusSpecification.values);
+          const scaling = extractUnitScaling(values, tempSpecDefaultScaling, toCelsiusConversion);
+          // F to C delta conversion is different from absolute conversion
+          scaling.scaledStep = convertAndScaleTemperatureStep(values, tempSpecDefaultScaling);
+
+          targetTemperatureScaling = scaling;
+          const { scaledMin, scaledMax, scaledStep } = scaling;
+          await device.setCapabilityOptions('target_temperature', { min: scaledMin, max: scaledMax, step: scaledStep });
+        }
+        if (tuyaCapability === 'temp_current') {
+          const values: Record<string, unknown> = JSON.parse(statusSpecification.values);
+          const scaling = extractUnitScaling(values, tempCurrentSpecDefaultScaling, toCelsiusConversion);
+          // F to C delta conversion is different from absolute conversion
+          scaling.scaledStep = convertAndScaleTemperatureStep(values, tempCurrentSpecDefaultScaling);
+
+          measureTemperatureScaling = scaling;
+          const { scaledMin, scaledMax, scaledStep } = scaling;
+          await device.setCapabilityOptions('measure_temperature', {
+            min: scaledMin,
+            max: scaledMax,
+            step: scaledStep,
+          });
+        }
+      }
+    }
+
+    await device.setStoreValue('target_temperature_scale', targetTemperatureScaling);
+    device.log('Migrated target_temperature scaling to', targetTemperatureScaling);
+
+    await device.setStoreValue('measure_temperature_scale', measureTemperatureScaling);
+    device.log('Migrated measure_temperature scaling to', measureTemperatureScaling);
+
+    device.log('Successfully migrated fan temperature scaling');
   });
 }
