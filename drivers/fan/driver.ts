@@ -73,12 +73,6 @@ export default class TuyaOAuth2DriverFan extends TuyaOAuth2DriverWithLight {
         props.store.tuya_capabilities.push(tuyaCapability);
         fanSpeedTuyaCapability = tuyaCapability;
       }
-
-      if (tuyaCapability === 'colour_data') {
-        props.store.tuya_capabilities.push(tuyaCapability);
-        props.capabilities.push('light_hue');
-        props.capabilities.push('light_saturation');
-      }
     }
 
     // Fix onoff when light is present

@@ -81,11 +81,7 @@ export default class TuyaOAuth2DeviceFan extends TuyaOAuth2DeviceWithLight {
       const value = status[tuyaCapability];
       const homeyCapability = getFromMap(FAN_CAPABILITIES_MAPPING, tuyaCapability);
 
-      if (
-        (constIncludes(FAN_CAPABILITIES.read_write, tuyaCapability) ||
-          constIncludes(FAN_CAPABILITIES.read_only, tuyaCapability)) &&
-        homeyCapability
-      ) {
+      if (constIncludes(FAN_CAPABILITIES.read_write, tuyaCapability) && homeyCapability) {
         await this.safeSetCapabilityValue(homeyCapability, value);
       }
 

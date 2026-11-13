@@ -8,9 +8,9 @@ export const FAN_CAPABILITIES_MAPPING = {
   switch_vertical: 'fan_swing_vertical',
   switch_horizontal: 'fan_swing_horizontal',
   child_lock: 'child_lock',
-  // temp: 'target_temperature' - may need unit conversion
-  // temp_current: 'measure_temperature' - may need unit conversion
-  // light - handled by superclass
+  temp: 'target_temperature',
+  temp_current: 'measure_temperature',
+  // colour_data - handled by superclass
   light: 'onoff.light',
   switch_led: 'onoff.light',
 } as const;
@@ -26,16 +26,15 @@ export const FAN_CAPABILITIES = {
   read_write: [
     'switch',
     'fan_switch',
-    'fan_speed_percent',
     'switch_horizontal',
     'switch_vertical',
     'child_lock',
-    'temp',
     // Light
     'light',
     'switch_led',
   ],
-  read_only: ['temp_current'],
+  read_write_special: ['fan_speed', 'fan_speed_percent', 'temp'],
+  read_only_special: ['temp_current'],
   setting: ['fan_direction'],
 } as const;
 
