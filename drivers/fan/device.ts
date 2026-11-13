@@ -44,14 +44,14 @@ export default class TuyaOAuth2DeviceFan extends TuyaOAuth2DeviceWithLight {
 
     // fan_speed
     const fanSpeedTuyaCapability = this.getStoreValue('fan_speed_tuya_capability');
-    const fanSpeedRange = this.getStoreValue('fan_speed_scale') as
+    const fanSpeedScale = this.getStoreValue('fan_speed_scale') as
       | { min: number; max: number; step: number; scale: number }
       | undefined;
 
     if (this.hasCapability('legacy_fan_speed')) {
       this.registerCapabilityListener('legacy_fan_speed', (value: string) => {
         // parse if the tuya capability expects a numeric value
-        const parsedValue = fanSpeedRange === undefined ? value : parseFloat(value);
+        const parsedValue = fanSpeedScale === undefined ? value : parseFloat(value);
         return this.sendCommand({
           code: fanSpeedTuyaCapability,
           value: parsedValue,
@@ -60,10 +60,10 @@ export default class TuyaOAuth2DeviceFan extends TuyaOAuth2DeviceWithLight {
     }
 
     if (this.hasCapability('fan_speed')) {
-      const { min = 0, max = 100 } = fanSpeedRange ?? {};
+      const { min = 0, max = 100 } = fanSpeedScale ?? {};
       this.registerCapabilityListener('fan_speed', (value: number) => {
         const scaledValue = min + value * (max - min);
-        return this.sendCommand({ code: 'fan_speed', value: scaledValue });
+        return this.sendCommand({ code: fanSpeedTuyaCapability, value: scaledValue });
       });
     }
   }
