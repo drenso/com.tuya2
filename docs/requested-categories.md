@@ -172,10 +172,6 @@ No new devices added
     - Evolar EVO-14000CHW mobile airco
     - Air Conditioner with Wi-Fi
 
-  - ywcgq - Not documented
-    - Water level monitor
-    - Tank A Level
-
   - znrb - Not documented
     - Smart Heat Pump
     - Power World DC Air/Water Heatpump

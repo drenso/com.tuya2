@@ -1,0 +1,44 @@
+[
+  {
+    "id": "level_off",
+    "type": "dropdown",
+    "label": {
+      "en": "Pump off level",
+      "nl": "Pomp uit niveau"
+    },
+    "hint": {
+      "en": "The water level at which the pump is switched off. Called \"Level Off\" in the Tuya app.",
+      "nl": "Het waterniveau waarbij de pomp wordt uitgeschakeld. Heet \"Level Off\" in de Tuya-app."
+    },
+    "value": "100",
+    "values": [
+      {
+        "id": "25",
+        "label": {
+          "en": "25%"
+        }
+      },
+      {
+        "id": "50",
+        "label": {
+          "en": "50%"
+        }
+      },
+      {
+        "id": "75",
+        "label": {
+          "en": "75%"
+        }
+      },
+      {
+        "id": "100",
+        "label": {
+          "en": "100%"
+        }
+      }
+    ]
+  },
+  {
+    "$extends": "deviceSpecification"
+  }
+]

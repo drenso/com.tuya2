@@ -1247,6 +1247,112 @@
         ]
       },
       {
+        "id": "sensor_liquid_level_measure_liquid_level_changed",
+        "title": {
+          "en": "The liquid level changed",
+          "nl": "Het vloeistofniveau is veranderd"
+        },
+        "tokens": [
+          {
+            "name": "value",
+            "title": {
+              "en": "Liquid level",
+              "nl": "Vloeistofniveau"
+            },
+            "type": "number",
+            "example": 75
+          }
+        ],
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=sensor_liquid_level&capabilities=measure_liquid_level"
+          }
+        ]
+      },
+      {
+        "id": "sensor_liquid_level_measure_liquid_depth_changed",
+        "title": {
+          "en": "The liquid depth changed",
+          "nl": "De vloeistofdiepte is veranderd"
+        },
+        "tokens": [
+          {
+            "name": "value",
+            "title": {
+              "en": "Liquid depth",
+              "nl": "Vloeistofdiepte"
+            },
+            "type": "number",
+            "example": 0.56
+          }
+        ],
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=sensor_liquid_level&capabilities=measure_liquid_depth"
+          }
+        ]
+      },
+      {
+        "id": "sensor_liquid_level_alarm_liquid_low_true",
+        "title": {
+          "en": "Low liquid level alarm turned on",
+          "nl": "Alarm laag vloeistofniveau ging aan"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=sensor_liquid_level&capabilities=alarm_liquid_low"
+          }
+        ]
+      },
+      {
+        "id": "sensor_liquid_level_alarm_liquid_low_false",
+        "title": {
+          "en": "Low liquid level alarm turned off",
+          "nl": "Alarm laag vloeistofniveau ging uit"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=sensor_liquid_level&capabilities=alarm_liquid_low"
+          }
+        ]
+      },
+      {
+        "id": "sensor_liquid_level_alarm_liquid_high_true",
+        "title": {
+          "en": "High liquid level alarm turned on",
+          "nl": "Alarm hoog vloeistofniveau ging aan"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=sensor_liquid_level&capabilities=alarm_liquid_high"
+          }
+        ]
+      },
+      {
+        "id": "sensor_liquid_level_alarm_liquid_high_false",
+        "title": {
+          "en": "High liquid level alarm turned off",
+          "nl": "Alarm hoog vloeistofniveau ging uit"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=sensor_liquid_level&capabilities=alarm_liquid_high"
+          }
+        ]
+      },
+      {
         "id": "socket_sub_switch_turned_off",
         "highlight": true,
         "title": {
@@ -1329,6 +1435,31 @@
             "type": "device",
             "name": "device",
             "filter": "driver_id=thermostat&capabilities=open_window_sensor"
+          }
+        ]
+      },
+      {
+        "id": "water_level_controller_measure_liquid_level_changed",
+        "title": {
+          "en": "The water level changed",
+          "nl": "Het waterniveau is veranderd"
+        },
+        "tokens": [
+          {
+            "name": "value",
+            "title": {
+              "en": "Water level",
+              "nl": "Waterniveau"
+            },
+            "type": "number",
+            "example": 75
+          }
+        ],
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=water_level_controller&capabilities=measure_liquid_level"
           }
         ]
       }
@@ -3543,6 +3674,34 @@
             "type": "device",
             "name": "device",
             "filter": "driver_id=sensor_human&capabilities=alarm_human"
+          }
+        ]
+      },
+      {
+        "id": "sensor_liquid_level_alarm_liquid_low_is_true",
+        "title": {
+          "en": "Low liquid level alarm !{{is|is not}} active",
+          "nl": "Alarm laag vloeistofniveau !{{is|is niet}} actief"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=sensor_liquid_level&capabilities=alarm_liquid_low"
+          }
+        ]
+      },
+      {
+        "id": "sensor_liquid_level_alarm_liquid_high_is_true",
+        "title": {
+          "en": "High liquid level alarm !{{is|is not}} active",
+          "nl": "Alarm hoog vloeistofniveau !{{is|is niet}} actief"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=sensor_liquid_level&capabilities=alarm_liquid_high"
           }
         ]
       },
@@ -7363,6 +7522,273 @@
     },
     {
       "capabilities": [
+        "measure_liquid_level",
+        "measure_liquid_depth",
+        "alarm_liquid_low",
+        "alarm_liquid_high"
+      ],
+      "connectivity": [
+        "cloud"
+      ],
+      "platforms": [
+        "local",
+        "cloud"
+      ],
+      "images": {
+        "small": "/drivers/sensor_liquid_level/assets/images/small.png",
+        "large": "/drivers/sensor_liquid_level/assets/images/large.png",
+        "xlarge": "/drivers/sensor_liquid_level/assets/images/xlarge.png"
+      },
+      "pair": [
+        {
+          "id": "welcome",
+          "navigation": {
+            "next": "usercode"
+          }
+        },
+        {
+          "id": "usercode"
+        },
+        {
+          "id": "qrcode"
+        },
+        {
+          "id": "retrieve_devices",
+          "template": "loading",
+          "options": {
+            "text": "pair.loading_devices"
+          }
+        },
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ],
+      "repair": [
+        {
+          "id": "usercode"
+        },
+        {
+          "id": "qrcode"
+        }
+      ],
+      "class": "sensor",
+      "name": {
+        "en": "Liquid Level Sensor",
+        "nl": "Vloeistofniveausensor"
+      },
+      "id": "sensor_liquid_level",
+      "settings": [
+        {
+          "type": "group",
+          "label": {
+            "en": "Device settings",
+            "nl": "Apparaatinstellingen"
+          },
+          "children": [
+            {
+              "id": "max_set",
+              "type": "number",
+              "label": {
+                "en": "High level alarm",
+                "nl": "Alarm hoog niveau"
+              },
+              "hint": {
+                "en": "The liquid level above which the high level alarm is raised.",
+                "nl": "Het vloeistofniveau waarboven het alarm voor hoog niveau afgaat."
+              },
+              "units": "%",
+              "min": 0,
+              "max": 100,
+              "step": 1,
+              "value": 90
+            },
+            {
+              "id": "mini_set",
+              "type": "number",
+              "label": {
+                "en": "Low level alarm",
+                "nl": "Alarm laag niveau"
+              },
+              "hint": {
+                "en": "The liquid level below which the low level alarm is raised.",
+                "nl": "Het vloeistofniveau waaronder het alarm voor laag niveau afgaat."
+              },
+              "units": "%",
+              "min": 0,
+              "max": 100,
+              "step": 1,
+              "value": 10
+            },
+            {
+              "id": "installation_height",
+              "type": "number",
+              "label": {
+                "en": "Installation height",
+                "nl": "Installatiehoogte"
+              },
+              "hint": {
+                "en": "The distance from the sensor to the bottom of the tank.",
+                "nl": "De afstand van de sensor tot de bodem van de tank."
+              },
+              "units": "m",
+              "min": 0,
+              "max": 10,
+              "step": 0.001,
+              "value": 1
+            },
+            {
+              "id": "liquid_depth_max",
+              "type": "number",
+              "label": {
+                "en": "Distance to full level",
+                "nl": "Afstand tot vol niveau"
+              },
+              "hint": {
+                "en": "The distance from the sensor to the liquid surface when the tank is full.",
+                "nl": "De afstand van de sensor tot het vloeistofoppervlak wanneer de tank vol is."
+              },
+              "units": "m",
+              "min": 0,
+              "max": 10,
+              "step": 0.001,
+              "value": 0.1
+            }
+          ]
+        },
+        {
+          "id": "liquid_depth_scaling",
+          "value": "2",
+          "label": {
+            "en": "Liquid Depth Scale"
+          },
+          "hint": {
+            "en": "By how much the liquid depth reported by the device is scaled."
+          },
+          "type": "dropdown",
+          "values": [
+            {
+              "id": "0",
+              "label": {
+                "en": "1"
+              }
+            },
+            {
+              "id": "1",
+              "label": {
+                "en": "1/10"
+              }
+            },
+            {
+              "id": "2",
+              "label": {
+                "en": "1/100"
+              }
+            },
+            {
+              "id": "3",
+              "label": {
+                "en": "1/1000"
+              }
+            }
+          ]
+        },
+        {
+          "id": "installation_height_scaling",
+          "value": "3",
+          "label": {
+            "en": "Installation Height Scale"
+          },
+          "hint": {
+            "en": "By how much the installation height of the device is scaled."
+          },
+          "type": "dropdown",
+          "values": [
+            {
+              "id": "0",
+              "label": {
+                "en": "1"
+              }
+            },
+            {
+              "id": "1",
+              "label": {
+                "en": "1/10"
+              }
+            },
+            {
+              "id": "2",
+              "label": {
+                "en": "1/100"
+              }
+            },
+            {
+              "id": "3",
+              "label": {
+                "en": "1/1000"
+              }
+            }
+          ]
+        },
+        {
+          "id": "liquid_depth_max_scaling",
+          "value": "3",
+          "label": {
+            "en": "Distance To Full Level Scale"
+          },
+          "hint": {
+            "en": "By how much the distance to the full level of the device is scaled."
+          },
+          "type": "dropdown",
+          "values": [
+            {
+              "id": "0",
+              "label": {
+                "en": "1"
+              }
+            },
+            {
+              "id": "1",
+              "label": {
+                "en": "1/10"
+              }
+            },
+            {
+              "id": "2",
+              "label": {
+                "en": "1/100"
+              }
+            },
+            {
+              "id": "3",
+              "label": {
+                "en": "1/1000"
+              }
+            }
+          ]
+        },
+        {
+          "id": "deviceSpecification",
+          "type": "label",
+          "label": {
+            "en": "Device Specification"
+          },
+          "hint": {
+            "en": "The Tuya specification of this device"
+          },
+          "value": "<not available>"
+        }
+      ]
+    },
+    {
+      "capabilities": [
         "alarm_motion"
       ],
       "connectivity": [
@@ -8879,6 +9305,122 @@
     },
     {
       "capabilities": [
+        "onoff",
+        "measure_liquid_level"
+      ],
+      "connectivity": [
+        "cloud"
+      ],
+      "platforms": [
+        "local",
+        "cloud"
+      ],
+      "images": {
+        "small": "/drivers/water_level_controller/assets/images/small.png",
+        "large": "/drivers/water_level_controller/assets/images/large.png",
+        "xlarge": "/drivers/water_level_controller/assets/images/xlarge.png"
+      },
+      "pair": [
+        {
+          "id": "welcome",
+          "navigation": {
+            "next": "usercode"
+          }
+        },
+        {
+          "id": "usercode"
+        },
+        {
+          "id": "qrcode"
+        },
+        {
+          "id": "retrieve_devices",
+          "template": "loading",
+          "options": {
+            "text": "pair.loading_devices"
+          }
+        },
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ],
+      "repair": [
+        {
+          "id": "usercode"
+        },
+        {
+          "id": "qrcode"
+        }
+      ],
+      "class": "sensor",
+      "name": {
+        "en": "Water Level Controller",
+        "nl": "Waterniveaucontroller"
+      },
+      "id": "water_level_controller",
+      "settings": [
+        {
+          "id": "level_off",
+          "type": "dropdown",
+          "label": {
+            "en": "Pump off level",
+            "nl": "Pomp uit niveau"
+          },
+          "hint": {
+            "en": "The water level at which the pump is switched off. Called \"Level Off\" in the Tuya app.",
+            "nl": "Het waterniveau waarbij de pomp wordt uitgeschakeld. Heet \"Level Off\" in de Tuya-app."
+          },
+          "value": "100",
+          "values": [
+            {
+              "id": "25",
+              "label": {
+                "en": "25%"
+              }
+            },
+            {
+              "id": "50",
+              "label": {
+                "en": "50%"
+              }
+            },
+            {
+              "id": "75",
+              "label": {
+                "en": "75%"
+              }
+            },
+            {
+              "id": "100",
+              "label": {
+                "en": "100%"
+              }
+            }
+          ]
+        },
+        {
+          "id": "deviceSpecification",
+          "type": "label",
+          "label": {
+            "en": "Device Specification"
+          },
+          "hint": {
+            "en": "The Tuya specification of this device"
+          },
+          "value": "<not available>"
+        }
+      ]
+    },
+    {
+      "capabilities": [
         "windowcoverings_state",
         "windowcoverings_set"
       ],
@@ -9005,6 +9547,46 @@
         "en": "Human No Longer Detected"
       },
       "icon": "assets/capabilities/alarm_human.svg"
+    },
+    "alarm_liquid_high": {
+      "type": "boolean",
+      "title": {
+        "en": "High liquid level alarm",
+        "nl": "Alarm hoog vloeistofniveau"
+      },
+      "insights": true,
+      "insightsTitleTrue": {
+        "en": "Liquid level high",
+        "nl": "Vloeistofniveau hoog"
+      },
+      "insightsTitleFalse": {
+        "en": "Liquid level no longer high",
+        "nl": "Vloeistofniveau niet meer hoog"
+      },
+      "getable": true,
+      "setable": false,
+      "uiComponent": "sensor",
+      "icon": "assets/capabilities/alarm_liquid_high.svg"
+    },
+    "alarm_liquid_low": {
+      "type": "boolean",
+      "title": {
+        "en": "Low liquid level alarm",
+        "nl": "Alarm laag vloeistofniveau"
+      },
+      "insights": true,
+      "insightsTitleTrue": {
+        "en": "Liquid level low",
+        "nl": "Vloeistofniveau laag"
+      },
+      "insightsTitleFalse": {
+        "en": "Liquid level no longer low",
+        "nl": "Vloeistofniveau niet meer laag"
+      },
+      "getable": true,
+      "setable": false,
+      "uiComponent": "sensor",
+      "icon": "assets/capabilities/alarm_liquid_low.svg"
     },
     "alarm_pet": {
       "type": "boolean",
@@ -9180,6 +9762,42 @@
       "setable": false,
       "uiComponent": "sensor",
       "icon": "assets/capabilities/measure_gas.svg"
+    },
+    "measure_liquid_depth": {
+      "type": "number",
+      "title": {
+        "en": "Liquid depth",
+        "nl": "Vloeistofdiepte"
+      },
+      "units": {
+        "en": "m"
+      },
+      "insights": true,
+      "chartType": "spline",
+      "decimals": 2,
+      "getable": true,
+      "setable": false,
+      "uiComponent": "sensor",
+      "icon": "assets/capabilities/measure_liquid_depth.svg"
+    },
+    "measure_liquid_level": {
+      "type": "number",
+      "title": {
+        "en": "Liquid level",
+        "nl": "Vloeistofniveau"
+      },
+      "units": {
+        "en": "%"
+      },
+      "insights": true,
+      "chartType": "spline",
+      "decimals": 0,
+      "min": 0,
+      "max": 100,
+      "getable": true,
+      "setable": false,
+      "uiComponent": "sensor",
+      "icon": "assets/capabilities/measure_liquid_level.svg"
     },
     "mute_button": {
       "type": "boolean",

@@ -1,0 +1,20 @@
+{
+  "type": "boolean",
+  "title": {
+    "en": "High liquid level alarm",
+    "nl": "Alarm hoog vloeistofniveau"
+  },
+  "insights": true,
+  "insightsTitleTrue": {
+    "en": "Liquid level high",
+    "nl": "Vloeistofniveau hoog"
+  },
+  "insightsTitleFalse": {
+    "en": "Liquid level no longer high",
+    "nl": "Vloeistofniveau niet meer hoog"
+  },
+  "getable": true,
+  "setable": false,
+  "uiComponent": "sensor",
+  "icon": "assets/capabilities/alarm_liquid_high.svg"
+}

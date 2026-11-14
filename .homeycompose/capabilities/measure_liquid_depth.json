@@ -1,0 +1,17 @@
+{
+  "type": "number",
+  "title": {
+    "en": "Liquid depth",
+    "nl": "Vloeistofdiepte"
+  },
+  "units": {
+    "en": "m"
+  },
+  "insights": true,
+  "chartType": "spline",
+  "decimals": 2,
+  "getable": true,
+  "setable": false,
+  "uiComponent": "sensor",
+  "icon": "assets/capabilities/measure_liquid_depth.svg"
+}

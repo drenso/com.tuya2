@@ -1,0 +1,9 @@
+{
+  "$extends": "tuya",
+  "class": "sensor",
+  "name": {
+    "en": "Water Level Controller",
+    "nl": "Waterniveaucontroller"
+  },
+  "capabilities": ["onoff", "measure_liquid_level"]
+}

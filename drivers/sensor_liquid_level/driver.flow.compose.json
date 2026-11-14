@@ -1,0 +1,92 @@
+{
+  "conditions": [
+    {
+      "id": "sensor_liquid_level_alarm_liquid_low_is_true",
+      "title": {
+        "en": "Low liquid level alarm !{{is|is not}} active",
+        "nl": "Alarm laag vloeistofniveau !{{is|is niet}} actief"
+      },
+      "$filter": "capabilities=alarm_liquid_low"
+    },
+    {
+      "id": "sensor_liquid_level_alarm_liquid_high_is_true",
+      "title": {
+        "en": "High liquid level alarm !{{is|is not}} active",
+        "nl": "Alarm hoog vloeistofniveau !{{is|is niet}} actief"
+      },
+      "$filter": "capabilities=alarm_liquid_high"
+    }
+  ],
+  "triggers": [
+    {
+      "id": "sensor_liquid_level_measure_liquid_level_changed",
+      "title": {
+        "en": "The liquid level changed",
+        "nl": "Het vloeistofniveau is veranderd"
+      },
+      "$filter": "capabilities=measure_liquid_level",
+      "tokens": [
+        {
+          "name": "value",
+          "title": {
+            "en": "Liquid level",
+            "nl": "Vloeistofniveau"
+          },
+          "type": "number",
+          "example": 75
+        }
+      ]
+    },
+    {
+      "id": "sensor_liquid_level_measure_liquid_depth_changed",
+      "title": {
+        "en": "The liquid depth changed",
+        "nl": "De vloeistofdiepte is veranderd"
+      },
+      "$filter": "capabilities=measure_liquid_depth",
+      "tokens": [
+        {
+          "name": "value",
+          "title": {
+            "en": "Liquid depth",
+            "nl": "Vloeistofdiepte"
+          },
+          "type": "number",
+          "example": 0.56
+        }
+      ]
+    },
+    {
+      "id": "sensor_liquid_level_alarm_liquid_low_true",
+      "title": {
+        "en": "Low liquid level alarm turned on",
+        "nl": "Alarm laag vloeistofniveau ging aan"
+      },
+      "$filter": "capabilities=alarm_liquid_low"
+    },
+    {
+      "id": "sensor_liquid_level_alarm_liquid_low_false",
+      "title": {
+        "en": "Low liquid level alarm turned off",
+        "nl": "Alarm laag vloeistofniveau ging uit"
+      },
+      "$filter": "capabilities=alarm_liquid_low"
+    },
+    {
+      "id": "sensor_liquid_level_alarm_liquid_high_true",
+      "title": {
+        "en": "High liquid level alarm turned on",
+        "nl": "Alarm hoog vloeistofniveau ging aan"
+      },
+      "$filter": "capabilities=alarm_liquid_high"
+    },
+    {
+      "id": "sensor_liquid_level_alarm_liquid_high_false",
+      "title": {
+        "en": "High liquid level alarm turned off",
+        "nl": "Alarm hoog vloeistofniveau ging uit"
+      },
+      "$filter": "capabilities=alarm_liquid_high"
+    }
+  ]
+}
