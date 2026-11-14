@@ -9362,8 +9362,8 @@
       ],
       "class": "sensor",
       "name": {
-        "en": "Water Level Controller",
-        "nl": "Waterniveaucontroller"
+        "en": "Water Level Controller (Wi-Fi)",
+        "nl": "Waterniveaucontroller (wifi)"
       },
       "id": "water_level_controller",
       "settings": [
