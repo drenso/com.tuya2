@@ -1,0 +1,115 @@
+[
+  {
+    "type": "group",
+    "label": {
+      "en": "Device settings",
+      "nl": "Apparaatinstellingen"
+    },
+    "children": [
+      {
+        "id": "max_set",
+        "type": "number",
+        "label": {
+          "en": "High level alarm",
+          "nl": "Alarm hoog niveau"
+        },
+        "hint": {
+          "en": "The liquid level above which the high level alarm is raised.",
+          "nl": "Het vloeistofniveau waarboven het alarm voor hoog niveau afgaat."
+        },
+        "units": "%",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "value": 90
+      },
+      {
+        "id": "mini_set",
+        "type": "number",
+        "label": {
+          "en": "Low level alarm",
+          "nl": "Alarm laag niveau"
+        },
+        "hint": {
+          "en": "The liquid level below which the low level alarm is raised.",
+          "nl": "Het vloeistofniveau waaronder het alarm voor laag niveau afgaat."
+        },
+        "units": "%",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "value": 10
+      },
+      {
+        "id": "installation_height",
+        "type": "number",
+        "label": {
+          "en": "Installation height",
+          "nl": "Installatiehoogte"
+        },
+        "hint": {
+          "en": "The distance from the sensor to the bottom of the tank.",
+          "nl": "De afstand van de sensor tot de bodem van de tank."
+        },
+        "units": "m",
+        "min": 0,
+        "max": 10,
+        "step": 0.001,
+        "value": 1
+      },
+      {
+        "id": "liquid_depth_max",
+        "type": "number",
+        "label": {
+          "en": "Distance to full level",
+          "nl": "Afstand tot vol niveau"
+        },
+        "hint": {
+          "en": "The distance from the sensor to the liquid surface when the tank is full.",
+          "nl": "De afstand van de sensor tot het vloeistofoppervlak wanneer de tank vol is."
+        },
+        "units": "m",
+        "min": 0,
+        "max": 10,
+        "step": 0.001,
+        "value": 0.1
+      }
+    ]
+  },
+  {
+    "$extends": "scaledProperty",
+    "id": "liquid_depth_scaling",
+    "value": "2",
+    "label": {
+      "en": "Liquid Depth Scale"
+    },
+    "hint": {
+      "en": "By how much the liquid depth reported by the device is scaled."
+    }
+  },
+  {
+    "$extends": "scaledProperty",
+    "id": "installation_height_scaling",
+    "value": "3",
+    "label": {
+      "en": "Installation Height Scale"
+    },
+    "hint": {
+      "en": "By how much the installation height of the device is scaled."
+    }
+  },
+  {
+    "$extends": "scaledProperty",
+    "id": "liquid_depth_max_scaling",
+    "value": "3",
+    "label": {
+      "en": "Distance To Full Level Scale"
+    },
+    "hint": {
+      "en": "By how much the distance to the full level of the device is scaled."
+    }
+  },
+  {
+    "$extends": "deviceSpecification"
+  }
+]

@@ -1,0 +1,23 @@
+{
+  "triggers": [
+    {
+      "id": "water_level_controller_measure_liquid_level_changed",
+      "title": {
+        "en": "The water level changed",
+        "nl": "Het waterniveau is veranderd"
+      },
+      "$filter": "capabilities=measure_liquid_level",
+      "tokens": [
+        {
+          "name": "value",
+          "title": {
+            "en": "Water level",
+            "nl": "Waterniveau"
+          },
+          "type": "number",
+          "example": 75
+        }
+      ]
+    }
+  ]
+}

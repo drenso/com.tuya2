@@ -1,0 +1,19 @@
+{
+  "type": "number",
+  "title": {
+    "en": "Liquid level",
+    "nl": "Vloeistofniveau"
+  },
+  "units": {
+    "en": "%"
+  },
+  "insights": true,
+  "chartType": "spline",
+  "decimals": 0,
+  "min": 0,
+  "max": 100,
+  "getable": true,
+  "setable": false,
+  "uiComponent": "sensor",
+  "icon": "assets/capabilities/measure_liquid_level.svg"
+}

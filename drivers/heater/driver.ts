@@ -8,6 +8,7 @@ import type {
 } from '../../types/TuyaApiTypes.js';
 import type { StandardFlowArgs } from '../../types/TuyaTypes.js';
 import { DEFAULT_TUYA_HEATER_FAULTS, HEATER_CAPABILITIES_MAPPING } from './TuyaHeaterConstants.js';
+import { isWaterLevelController } from '../water_level_controller/TuyaWaterLevelControllerConstants.js';
 
 export default class TuyaOAuth2DriverHeater extends TuyaOAuth2Driver {
   protected TUYA_DEVICE_CATEGORIES = [
@@ -25,6 +26,11 @@ export default class TuyaOAuth2DriverHeater extends TuyaOAuth2Driver {
     this.homey.flow.getActionCard('heater_set_eco_mode').registerRunListener(async (args: StandardFlowArgs) => {
       await args.device.triggerCapabilityListener('eco_mode', args.value);
     });
+  }
+
+  // Some water level controllers are filed under the water heater category, see water_level_controller
+  protected onTuyaPairListDeviceFilter(device: TuyaDeviceResponse): boolean {
+    return super.onTuyaPairListDeviceFilter(device) && !isWaterLevelController(device);
   }
 
   protected onTuyaPairListDeviceProperties(

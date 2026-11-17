@@ -1,0 +1,9 @@
+{
+  "$extends": "tuya",
+  "class": "sensor",
+  "name": {
+    "en": "Liquid Level Sensor",
+    "nl": "Vloeistofniveausensor"
+  },
+  "capabilities": ["measure_liquid_level", "measure_liquid_depth", "alarm_liquid_low", "alarm_liquid_high"]
+}

@@ -70,5 +70,6 @@
     "2015": "Tuya error: Unsupported device category",
     "undefined": "Unknown Tuya error"
   },
-  "device_init_failed": "Device initialisation failed."
+  "device_init_failed": "Device initialisation failed.",
+  "liquid_level_alarm_range_invalid": "The low level alarm must be lower than the high level alarm."
 }
